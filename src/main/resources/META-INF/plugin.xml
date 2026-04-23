@@ -1,0 +1,45 @@
+<idea-plugin>
+    <id>dev.zefir.rider-background-plugin</id>
+    <name>Zefirrat. Wallpaper Background Sync.</name>
+    <vendor url="https://github.com/zefirrat/rider-background-plugin">Zefirrat</vendor>
+    <description><![CDATA[
+        <p>Do you spend time choosing beautiful desktop wallpapers, only to never see them because your IDE stays fullscreen all day? Do you want your IDE background to follow your desktop wallpaper without manually duplicating the same image in IDE settings?</p>
+        <p>This plugin is for you. It reads the current Windows wallpaper and syncs it with the IDE background so your workspace looks more like your actual desktop.</p>
+        <p><b>Important:</b> Wallpaper Engine animation is not supported. The plugin reads the current system wallpaper through the Windows wallpaper API, and that path usually exposes only a static snapshot of the current wallpaper, not the live rendered frame stream produced by Wallpaper Engine.</p>
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <notificationGroup id="Zefirrat. Wallpaper Background Sync." displayType="BALLOON" isLogByDefault="true"/>
+        <applicationConfigurable
+            parentId="tools"
+            instance="dev.zefir.background.settings.WallpaperSettingsConfigurable"
+            id="dev.zefir.background.settings"
+            displayName="Zefirrat. Wallpaper Background Sync."/>
+    </extensions>
+
+    <applicationListeners>
+        <listener
+            class="dev.zefir.background.WallpaperApplicationActivationListener"
+            topic="com.intellij.openapi.application.ApplicationActivationListener"/>
+    </applicationListeners>
+
+    <actions>
+        <action
+            id="dev.zefir.background.SyncWallpaperNowAction"
+            class="dev.zefir.background.actions.SyncWallpaperNowAction"
+            text="Sync Windows Wallpaper Now"
+            description="Reads the current Windows wallpaper and applies it as IDE background">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+
+        <action
+            id="dev.zefir.background.ClearWallpaperBackgroundAction"
+            class="dev.zefir.background.actions.ClearWallpaperBackgroundAction"
+            text="Clear Synced IDE Background"
+            description="Clears background applied by the wallpaper sync plugin">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+    </actions>
+</idea-plugin>
